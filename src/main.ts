@@ -1,5 +1,6 @@
 import './style.css';
 import { loadNotes, newNote, saveNotes, type Note } from './notes';
+import { runAssist } from './rocketride';
 
 let notes = loadNotes();
 let selectedId: string | null = notes[0]?.id ?? null;
@@ -51,7 +52,8 @@ function renderEditor(): void {
   editor.innerHTML = `
     <input id="title" />
     <textarea id="body" placeholder="Write something..."></textarea>
-    <div class="actions"><button id="delete">Delete</button></div>
+    <div class="actions"><button id="assist">✨ Assist</button><button id="delete">Delete</button></div>
+    <pre id="assist-out" hidden></pre>
   `;
   const title = editor.querySelector<HTMLInputElement>('#title')!;
   const body = editor.querySelector<HTMLTextAreaElement>('#body')!;
@@ -59,6 +61,16 @@ function renderEditor(): void {
   body.value = note.body;
   title.oninput = () => update({ title: title.value });
   body.oninput = () => update({ body: body.value });
+  const out = editor.querySelector<HTMLPreElement>('#assist-out')!;
+  editor.querySelector<HTMLButtonElement>('#assist')!.onclick = async () => {
+    out.hidden = false;
+    out.textContent = 'Thinking...';
+    try {
+      out.textContent = await runAssist(selected()!);
+    } catch (err) {
+      out.textContent = `RocketRide error: ${err instanceof Error ? err.message : String(err)}`;
+    }
+  };
   editor.querySelector<HTMLButtonElement>('#delete')!.onclick = () => {
     notes = notes.filter((n) => n.id !== note.id);
     saveNotes(notes);
