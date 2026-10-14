@@ -1,6 +1,6 @@
 import './style.css';
 import { loadNotes, newNote, saveNotes, type Note } from './notes';
-import { runAssist } from './rocketride';
+import { runAssist } from './assist';
 
 let notes = loadNotes();
 let selectedId: string | null = notes[0]?.id ?? null;

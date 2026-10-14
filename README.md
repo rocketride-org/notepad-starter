@@ -24,12 +24,15 @@ Then open http://localhost:5173.
 
 ## RocketRide integration (`integrated` branch)
 
-The `integrated` branch adds the [RocketRide TypeScript SDK](https://docs.rocketride.org) and one pipeline-backed feature: the **✨ Assist** button in the editor.
+The `integrated` branch adds the [RocketRide TypeScript SDK](https://docs.rocketride.org) and one pipeline-backed feature: the **✨ Assist** button in the editor. It sends the open note to a RocketRide pipeline that summarizes it in 3 to 5 bullets with Claude, and shows the bullets under the editor.
 
 | File | What it does |
 | --- | --- |
-| `src/rocketride.ts` | Creates one shared `RocketRideClient` and the `runAssist()` call |
+| `src/rocketride.ts` | Creates one shared, connected `RocketRideClient` |
+| `src/assist.ts` | The Summarize pipeline and `runAssist()`, which the Assist button calls |
 | `.env.example` | Copy to `.env.local` and add your RocketRide API key |
+
+The pipeline reads the Anthropic key as `${ROCKETRIDE_ANTHROPIC_KEY}`, which RocketRide resolves on the server from your organization's **Variables**. Set it there; it never goes into the browser.
 
 ```sh
 cp .env.example .env.local   # then set VITE_ROCKETRIDE_APIKEY
