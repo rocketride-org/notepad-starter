@@ -29,7 +29,8 @@ The `integrated` branch adds the [RocketRide TypeScript SDK](https://docs.rocket
 | File | What it does |
 | --- | --- |
 | `src/rocketride.ts` | Creates one shared, connected `RocketRideClient` |
-| `src/assist.ts` | The Summarize pipeline and `runAssist()`, which the Assist button calls |
+| `src/assist-pipeline.json` | The Summarize pipeline: webhook → question → prompt → Claude → answers |
+| `src/assist.ts` | `runAssist()`, which the Assist button calls: starts the pipeline and sends the note |
 | `.env.example` | Copy to `.env.local` and add your RocketRide API key |
 
 The pipeline reads the Anthropic key as `${ROCKETRIDE_ANTHROPIC_KEY}`, which RocketRide resolves on the server from your organization's **Variables**. Set it there; it never goes into the browser.
